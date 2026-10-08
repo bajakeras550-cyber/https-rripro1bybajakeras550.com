@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>RRI Pro 1 Mataram</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background:
+        radial-gradient(circle at top, #24345c, #080b14 55%, #030409);
+    color: white;
+}
+
+.radio {
+    width: 92%;
+    max-width: 480px;
+    padding: 28px;
+    border-radius: 28px;
+    background: rgba(15, 20, 35, 0.92);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.65),
+        inset 0 0 30px rgba(255,255,255,0.03);
+    backdrop-filter: blur(15px);
+}
+
+.logo {
+    text-align: center;
+    font-size: 14px;
+    letter-spacing: 4px;
+    color: #9ba7c7;
+    margin-bottom: 8px;
+}
+
+.station {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.city {
+    text-align: center;
+    color: #9fa9c3;
+    margin-bottom: 25px;
+}
+
+/* STATUS */
+
+.status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+
+.led {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: #555;
+    box-shadow: 0 0 0 transparent;
+    transition: 0.3s;
+}
+
+.led.connected {
+    background: #00ff73;
+    box-shadow: 0 0 12px #00ff73;
+}
+
+.led.error {
+    background: #ff3030;
+    box-shadow: 0 0 12px #ff3030;
+}
+
+/* SPECTRUM */
+
+.spectrum {
+    height: 130px;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    gap: 4px;
+    padding: 15px;
+    margin-bottom: 25px;
+    border-radius: 18px;
+    background: #05070d;
+    overflow: hidden;
+}
+
+.bar {
+    width: 7px;
+    min-height: 4px;
+    height: 15px;
+    border-radius: 10px 10px 2px 2px;
+
+    background: linear-gradient(
+        to top,
+        #00eaff,
+        #00ff7b,
+        #ffe600,
+        #ff7a00,
+        #ff1493
+    );
+
+    box-shadow: 0 0 8px rgba(0,255,255,0.5);
+
+    transition: height 0.08s ease;
+}
+
+/* CONTROLS */
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 15px 24px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, #293552, #151b2c);
+    box-shadow:
+        5px 5px 12px rgba(0,0,0,0.4),
+        -3px -3px 8px rgba(255,255,255,0.04);
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+.play {
+    background: linear-gradient(135deg, #007cff, #8a2be2);
+}
+
+.stop {
+    background: linear-gradient(135deg, #8d1c2c, #40101a);
+}
+
+/* VOLUME */
+
+.volume-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.volume-box span {
+    font-size: 20px;
+}
+
+input[type="range"] {
+    flex: 1;
+    accent-color: #00c8ff;
+}
+
+/* FOOTER */
+
+.footer {
+    text-align: center;
+    margin-top: 25px;
+    color: #66708b;
+    font-size: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="radio">
+
+    <div class="logo">
+        RADIO STREAM
+    </div>
+
+    <div class="station">
+        RRI PRO 1
+    </div>
+
+    <div class="city">
+        Mataram
+    </div>
+
+    <div class="status">
+        <div class="led" id="led"></div>
+        <span id="statusText">Tidak terhubung</span>
+    </div>
+
+    <!-- SPEKTRUM -->
+    <div class="spectrum" id="spectrum"></div>
+
+    <!-- AUDIO -->
+    <audio id="radioAudio"></audio>
+
+    <!-- BUTTON -->
+    <div class="controls">
+
+        <button class="play" onclick="playRadio()">
+            ▶ PUTAR
+        </button>
+
+        <button class="stop" onclick="stopRadio()">
+            ■ BERHENTI
+        </button>
+
+    </div>
+
+    <!-- VOLUME -->
+    <div class="volume-box">
+
+        <span>🔊</span>
+
+        <input
+            type="range"
+            id="volume"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.8"
+        >
+
+    </div>
+
+    <div class="footer">
+        RRI Pro 1 Mataram • Live Radio
+    </div>
+
+</div>
+
+<script>
+
+/* =====================================================
+   MASUKKAN URL STREAMING RRI DI SINI
+   ===================================================== */
+
+const STREAM_URL = "MASUKKAN_URL_STREAM_RRI_DI_SINI";
+
+
+/* AUDIO */
+
+const audio = document.getElementById("radioAudio");
+
+audio.volume = 0.8;
+
+
+/* STATUS */
+
+const led = document.getElementById("led");
+const statusText = document.getElementById("statusText");
+
+
+/* PLAY */
+
+function playRadio() {
+
+    if (STREAM_URL === "MASUKKAN_URL_STREAM_RRI_DI_SINI") {
+
+        statusText.textContent =
+            "URL streaming belum diisi";
+
+        led.className = "led error";
+
+        return;
+    }
+
+    audio.src = STREAM_URL;
+
+    audio.play()
+        .then(() => {
+
+            statusText.textContent =
+                "Terhubung • LIVE";
+
+            led.className =
+                "led connected";
+
+            startSpectrum();
+
+        })
+        .catch(() => {
+
+            statusText.textContent =
+                "Gagal terhubung";
+
+            led.className =
+                "led error";
+
+        });
+}
+
+
+/* STOP */
+
+function stopRadio() {
+
+    audio.pause();
+
+    audio.removeAttribute("src");
+
+    audio.load();
+
+    statusText.textContent =
+        "Tidak terhubung";
+
+    led.className =
+        "led";
+
+    stopSpectrum();
+}
+
+
+/* VOLUME */
+
+document
+.getElementById("volume")
+.addEventListener("input", function () {
+
+    audio.volume = this.value;
+
+});
+
+
+/* =====================================================
+   SPECTRUM VISUALIZER
+   ===================================================== */
+
+const spectrum =
+    document.getElementById("spectrum");
+
+const BAR_COUNT = 42;
+
+let bars = [];
+let spectrumTimer = null;
+
+
+/* BUAT BAR */
+
+for (let i = 0; i < BAR_COUNT; i++) {
+
+    const bar =
+        document.createElement("div");
+
+    bar.className = "bar";
+
+    spectrum.appendChild(bar);
+
+    bars.push(bar);
+
+}
+
+
+/* ANIMASI */
+
+function startSpectrum() {
+
+    if (spectrumTimer)
+        return;
+
+    spectrumTimer =
+        setInterval(() => {
+
+            bars.forEach((bar, index) => {
+
+                const wave =
+                    Math.sin(
+                        Date.now() / 180 +
+                        index * 0.55
+                    );
+
+                const random =
+                    Math.random() * 55;
+
+                let height =
+                    15 +
+                    Math.abs(wave) * 55 +
+                    random;
+
+                if (height > 110)
+                    height = 110;
+
+                bar.style.height =
+                    height + "px";
+
+            });
+
+        }, 80);
+}
+
+
+/* STOP ANIMASI */
+
+function stopSpectrum() {
+
+    clearInterval(spectrumTimer);
+
+    spectrumTimer = null;
+
+    bars.forEach(bar => {
+
+        bar.style.height = "5px";
+
+    });
+}
+
+
+/* ERROR */
+
+audio.addEventListener("error", () => {
+
+    statusText.textContent =
+        "Koneksi terputus";
+
+    led.className =
+        "led error";
+
+    stopSpectrum();
+
+});
+
+
+/* PLAYING */
+
+audio.addEventListener("playing", () => {
+
+    statusText.textContent =
+        "Terhubung • LIVE";
+
+    led.className =
+        "led connected";
+
+});
+
+
+/* PAUSE */
+
+audio.addEventListener("pause", () => {
+
+    if (!audio.src)
+        return;
+
+    statusText.textContent =
+        "Dijeda";
+
+});
+
+
+</script>
+
+</body>
+  </html>
