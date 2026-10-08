@@ -174,11 +174,15 @@ body {
 }
 
 .bar {
-    width: 7px;
+    width: 8px;
 
     min-height: 2px;
 
     height: 2px;
+
+    flex: 1;
+
+    max-width: 9px;
 
     border-radius:
         10px 10px 2px 2px;
@@ -194,11 +198,14 @@ body {
         );
 
     box-shadow:
-        0 0 8px
-        rgba(0,255,255,0.5);
+        0 0 6px
+        rgba(0,255,255,0.45);
 
-    transition:
-        height 0.05s ease;
+    /*
+       PENTING:
+       Tidak memakai transition
+       agar HP tidak lag.
+    */
 }
 
 
@@ -413,6 +420,38 @@ input[type="range"] {
     font-size: 12px;
 }
 
+
+/* MOBILE */
+
+@media (max-width: 380px) {
+
+    .radio {
+        padding: 20px;
+    }
+
+    .station {
+        font-size: 26px;
+    }
+
+    .controls {
+        gap: 8px;
+    }
+
+    button {
+        padding: 13px 16px;
+        font-size: 14px;
+    }
+
+    .equalizer {
+        gap: 2px;
+    }
+
+    .eq-slider {
+        width: 22px;
+    }
+
+}
+
 </style>
 
 </head>
@@ -466,6 +505,7 @@ input[type="range"] {
 <audio
     id="radioAudio"
     preload="none"
+    playsinline
 ></audio>
 
 
@@ -476,6 +516,7 @@ input[type="range"] {
     <button
         class="play"
         id="playButton"
+        type="button"
     >
         ▶ PUTAR
     </button>
@@ -484,6 +525,7 @@ input[type="range"] {
     <button
         class="stop"
         id="stopButton"
+        type="button"
     >
         ■ BERHENTI
     </button>
@@ -525,6 +567,7 @@ input[type="range"] {
 <button
     class="reset-eq"
     id="resetEq"
+    type="button"
 >
     ↺ RESET EQ
 </button>
@@ -553,44 +596,45 @@ const STREAM_URL =
    ===================================================== */
 
 const audio =
-document.getElementById("radioAudio");
+    document.getElementById("radioAudio");
 
 const led =
-document.getElementById("led");
+    document.getElementById("led");
 
 const statusText =
-document.getElementById("statusText");
+    document.getElementById("statusText");
 
 const volume =
-document.getElementById("volume");
+    document.getElementById("volume");
 
 const spectrum =
-document.getElementById("spectrum");
+    document.getElementById("spectrum");
 
 const equalizerContainer =
-document.getElementById("equalizer");
+    document.getElementById("equalizer");
+
+const playButton =
+    document.getElementById("playButton");
+
+const stopButton =
+    document.getElementById("stopButton");
+
+const resetEqButton =
+    document.getElementById("resetEq");
 
 
 /* =====================================================
    STATUS
    ===================================================== */
 
-function setStatus(
-    text,
-    type = ""
-) {
+function setStatus(text, type = "") {
 
-    statusText.textContent =
-        text;
+    statusText.textContent = text;
 
-    led.className =
-        "led";
+    led.className = "led";
 
     if (type) {
-
-        led.classList.add(
-            type
-        );
+        led.classList.add(type);
     }
 }
 
@@ -603,7 +647,7 @@ audio.volume = 0.8;
 
 
 /* =====================================================
-   WEB AUDIO VARIABLES
+   WEB AUDIO
    ===================================================== */
 
 let audioContext = null;
@@ -617,6 +661,12 @@ let masterGain = null;
 let equalizer = [];
 
 let audioGraphReady = false;
+
+let spectrumAnimation = null;
+
+let connecting = false;
+
+let connectionTimer = null;
 
 
 /* =====================================================
@@ -640,46 +690,38 @@ const EQ_FREQUENCIES = [
 
 
 /* =====================================================
-   CREATE EQ UI
+   CREATE EQ
    ===================================================== */
 
 function createEqualizerUI() {
 
     equalizerContainer.innerHTML = "";
 
-
     EQ_FREQUENCIES.forEach(
         (frequency, index) => {
 
             const band =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             band.className =
                 "eq-band";
 
 
             const value =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             value.className =
                 "eq-value";
 
             value.id =
-                "eq-value-" +
-                index;
+                "eq-value-" + index;
 
             value.textContent =
                 "0 dB";
 
 
             const slider =
-                document.createElement(
-                    "input"
-                );
+                document.createElement("input");
 
             slider.type =
                 "range";
@@ -700,14 +742,11 @@ function createEqualizerUI() {
                 "0";
 
             slider.id =
-                "eq-" +
-                index;
+                "eq-" + index;
 
 
             const label =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             label.className =
                 "eq-label";
@@ -715,12 +754,8 @@ function createEqualizerUI() {
 
             label.textContent =
                 frequency >= 1000
-
-                ? (
-                    frequency / 1000
-                ) + "k"
-
-                : frequency;
+                    ? (frequency / 1000) + "k"
+                    : frequency;
 
 
             slider.addEventListener(
@@ -728,17 +763,11 @@ function createEqualizerUI() {
                 function() {
 
                     const gain =
-                        Number(
-                            this.value
-                        );
+                        Number(this.value);
 
 
                     value.textContent =
-                        (
-                            gain > 0
-                            ? "+"
-                            : ""
-                        ) +
+                        (gain > 0 ? "+" : "") +
                         gain +
                         " dB";
 
@@ -754,33 +783,25 @@ function createEqualizerUI() {
 
                                 gain,
 
-                                audioContext
-                                    .currentTime,
+                                audioContext.currentTime,
 
-                                0.01
+                                0.015
+
                             );
+
                     }
 
                 }
             );
 
 
-            band.appendChild(
-                value
-            );
+            band.appendChild(value);
 
-            band.appendChild(
-                slider
-            );
+            band.appendChild(slider);
 
-            band.appendChild(
-                label
-            );
+            band.appendChild(label);
 
-
-            equalizerContainer.appendChild(
-                band
-            );
+            equalizerContainer.appendChild(band);
 
         }
     );
@@ -796,8 +817,9 @@ createEqualizerUI();
 
 function setupAudioGraph() {
 
-    if (audioGraphReady)
+    if (audioGraphReady) {
         return true;
+    }
 
 
     const AudioContextClass =
@@ -822,11 +844,15 @@ function setupAudioGraph() {
             new AudioContextClass();
 
 
+        /*
+           AUDIO ELEMENT
+           ↓
+           SOURCE
+        */
+
         sourceNode =
             audioContext
-                .createMediaElementSource(
-                    audio
-                );
+                .createMediaElementSource(audio);
 
 
         let previousNode =
@@ -861,18 +887,11 @@ function setupAudioGraph() {
                     0;
 
 
-                previousNode.connect(
-                    filter
-                );
+                previousNode.connect(filter);
 
+                previousNode = filter;
 
-                previousNode =
-                    filter;
-
-
-                equalizer.push(
-                    filter
-                );
+                equalizer.push(filter);
 
             }
         );
@@ -883,12 +902,16 @@ function setupAudioGraph() {
         */
 
         analyser =
-            audioContext
-                .createAnalyser();
+            audioContext.createAnalyser();
 
+
+        /*
+           1024 LEBIH RINGAN
+           UNTUK HP
+        */
 
         analyser.fftSize =
-            2048;
+            1024;
 
 
         analyser.minDecibels =
@@ -896,37 +919,36 @@ function setupAudioGraph() {
 
 
         analyser.maxDecibels =
-            -10;
-
-
-        analyser.smoothingTimeConstant =
-            0.72;
+            -15;
 
 
         /*
-           MASTER
+           SMOOTHING
+        */
+
+        analyser.smoothingTimeConstant =
+            0.75;
+
+
+        /*
+           MASTER GAIN
         */
 
         masterGain =
-            audioContext
-                .createGain();
+            audioContext.createGain();
 
 
         masterGain.gain.value =
-            Number(
-                volume.value
-            );
+            Number(volume.value);
 
 
-        previousNode.connect(
-            analyser
-        );
+        /*
+           CONNECT
+        */
 
+        previousNode.connect(analyser);
 
-        analyser.connect(
-            masterGain
-        );
-
+        analyser.connect(masterGain);
 
         masterGain.connect(
             audioContext.destination
@@ -943,7 +965,7 @@ function setupAudioGraph() {
     catch (error) {
 
         console.error(
-            "AUDIO GRAPH ERROR:",
+            "Audio graph error:",
             error
         );
 
@@ -963,15 +985,11 @@ function setupAudioGraph() {
    PLAY
    ===================================================== */
 
-let connecting = false;
-
-let connectionTimer = null;
-
-
 async function playRadio() {
 
-    if (connecting)
+    if (connecting) {
         return;
+    }
 
 
     connecting = true;
@@ -990,12 +1008,10 @@ async function playRadio() {
     try {
 
         /*
-           SIAPKAN AUDIO
+           BUAT AUDIO GRAPH
         */
 
-        if (
-            !setupAudioGraph()
-        ) {
+        if (!setupAudioGraph()) {
 
             connecting = false;
 
@@ -1013,6 +1029,7 @@ async function playRadio() {
         ) {
 
             await audioContext.resume();
+
         }
 
 
@@ -1021,48 +1038,42 @@ async function playRadio() {
         */
 
         if (
-            audio.src !==
-            STREAM_URL
+            audio.src !== STREAM_URL
         ) {
 
             audio.src =
                 STREAM_URL;
 
             audio.load();
+
         }
 
 
         /*
-           PLAY
+           PUTAR
         */
 
         await audio.play();
 
 
         /*
-           JANGAN langsung mengatakan
-           TERHUBUNG.
-
-           Tunggu event "playing".
+           TIMEOUT
         */
-
 
         connectionTimer =
             setTimeout(
                 function() {
 
                     if (
+                        !audio.paused &&
                         audio.readyState < 3
                     ) {
 
                         setStatus(
-                            "RRI belum mengirim audio",
+                            "RRI lambat / buffering",
                             "error"
                         );
 
-                        audio.pause();
-
-                        stopSpectrum();
                     }
 
                     connecting =
@@ -1086,18 +1097,17 @@ async function playRadio() {
         );
 
 
+        connecting =
+            false;
+
+
         setStatus(
             "Gagal terhubung ke RRI",
             "error"
         );
 
-
-        connecting =
-            false;
-
-
-        stopSpectrum();
     }
+
 }
 
 
@@ -1115,21 +1125,22 @@ function stopRadio() {
     audio.pause();
 
 
-    setStatus(
-        "Tidak terhubung"
-    );
-
-
     connecting =
         false;
 
 
     stopSpectrum();
+
+
+    setStatus(
+        "Tidak terhubung"
+    );
+
 }
 
 
 /* =====================================================
-   AUDIO PLAYING
+   PLAYING
    ===================================================== */
 
 audio.addEventListener(
@@ -1170,6 +1181,27 @@ audio.addEventListener(
             setStatus(
                 "Buffering..."
             );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   STALLED
+   ===================================================== */
+
+audio.addEventListener(
+    "stalled",
+    function() {
+
+        if (!audio.paused) {
+
+            setStatus(
+                "Koneksi RRI terhenti..."
+            );
+
         }
 
     }
@@ -1185,7 +1217,7 @@ audio.addEventListener(
     function() {
 
         console.log(
-            "RRI can play"
+            "RRI stream siap diputar"
         );
 
     }
@@ -1205,14 +1237,14 @@ audio.addEventListener(
         );
 
 
-        console.error(
-            "RRI ERROR:",
-            audio.error
-        );
-
-
         connecting =
             false;
+
+
+        console.error(
+            "RRI AUDIO ERROR:",
+            audio.error
+        );
 
 
         setStatus(
@@ -1228,25 +1260,6 @@ audio.addEventListener(
 
 
 /* =====================================================
-   STALLED
-   ===================================================== */
-
-audio.addEventListener(
-    "stalled",
-    function() {
-
-        if (!audio.paused) {
-
-            setStatus(
-                "Koneksi RRI terhenti..."
-            );
-        }
-
-    }
-);
-
-
-/* =====================================================
    VOLUME
    ===================================================== */
 
@@ -1255,9 +1268,7 @@ volume.addEventListener(
     function() {
 
         const value =
-            Number(
-                this.value
-            );
+            Number(this.value);
 
 
         audio.volume =
@@ -1286,11 +1297,17 @@ volume.addEventListener(
 
 
 /* =====================================================
-   SPECTRUM BARS
+   CREATE SPECTRUM BARS
    ===================================================== */
 
+/*
+   32 BAR
+   Supaya lebih ringan di HP.
+*/
+
 const BAR_COUNT =
-    42;
+    32;
+
 
 const bars = [];
 
@@ -1302,9 +1319,7 @@ for (
 ) {
 
     const bar =
-        document.createElement(
-            "div"
-        );
+        document.createElement("div");
 
 
     bar.className =
@@ -1315,14 +1330,9 @@ for (
         "2px";
 
 
-    spectrum.appendChild(
-        bar
-    );
+    spectrum.appendChild(bar);
 
-
-    bars.push(
-        bar
-    );
+    bars.push(bar);
 
 }
 
@@ -1331,18 +1341,16 @@ for (
    REAL SPECTRUM
    ===================================================== */
 
-let spectrumAnimation =
-    null;
-
-
 function startRealSpectrum() {
 
-    if (!analyser)
+    if (!analyser) {
         return;
+    }
 
 
-    if (spectrumAnimation)
+    if (spectrumAnimation) {
         return;
+    }
 
 
     const data =
@@ -1354,9 +1362,17 @@ function startRealSpectrum() {
     function draw() {
 
         spectrumAnimation =
-            requestAnimationFrame(
-                draw
-            );
+            requestAnimationFrame(draw);
+
+
+        /*
+           Kalau radio berhenti,
+           jangan terus proses spectrum.
+        */
+
+        if (audio.paused) {
+            return;
+        }
 
 
         analyser.getByteFrequencyData(
@@ -1374,17 +1390,21 @@ function startRealSpectrum() {
             i++
         ) {
 
+            /*
+               Distribusi frekuensi
+            */
+
             const start =
                 Math.floor(
 
                     Math.pow(
                         i / BAR_COUNT,
-                        1.7
+                        1.6
                     ) *
 
                     binCount *
 
-                    0.75
+                    0.82
 
                 );
 
@@ -1401,31 +1421,21 @@ function startRealSpectrum() {
                             (i + 1) /
                             BAR_COUNT,
 
-                            1.7
+                            1.6
 
                         ) *
 
                         binCount *
 
-                        0.75
+                        0.82
 
                     )
 
                 );
 
 
-            let sum = 0;
+            let sum =
+                0;
 
-            let count = 0;
 
-
-            for (
-                let j = start;
-
-                j < end &&
-                j < binCount;
-
-                j++
-            ) {
-
-           
+            let count =
