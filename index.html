@@ -1,3 +1,543 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>RRI Pro 1 Mataram</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-family: Arial, sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            #24345c,
+            #080b14 55%,
+            #030409
+        );
+
+    color: white;
+}
+
+.radio {
+    width: 92%;
+    max-width: 480px;
+
+    padding: 28px;
+
+    border-radius: 28px;
+
+    background:
+        rgba(15, 20, 35, 0.92);
+
+    border:
+        1px solid
+        rgba(255,255,255,0.12);
+
+    box-shadow:
+        0 25px 70px
+        rgba(0,0,0,0.65),
+
+        inset 0 0 30px
+        rgba(255,255,255,0.03);
+
+    backdrop-filter: blur(15px);
+}
+
+
+/* LOGO */
+
+.logo {
+    text-align: center;
+
+    font-size: 14px;
+
+    letter-spacing: 4px;
+
+    color: #9ba7c7;
+
+    margin-bottom: 8px;
+}
+
+
+/* STATION */
+
+.station {
+    text-align: center;
+
+    font-size: 30px;
+
+    font-weight: bold;
+
+    margin-bottom: 5px;
+}
+
+
+/* CITY */
+
+.city {
+    text-align: center;
+
+    color: #9fa9c3;
+
+    margin-bottom: 25px;
+}
+
+
+/* STATUS */
+
+.status {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    margin-bottom: 25px;
+
+    font-size: 14px;
+}
+
+.led {
+    width: 11px;
+    height: 11px;
+
+    border-radius: 50%;
+
+    background: #555;
+
+    box-shadow:
+        0 0 0 transparent;
+
+    transition: 0.3s;
+}
+
+.led.connected {
+    background: #00ff73;
+
+    box-shadow:
+        0 0 12px #00ff73;
+}
+
+.led.error {
+    background: #ff3030;
+
+    box-shadow:
+        0 0 12px #ff3030;
+}
+
+
+/* SPECTRUM */
+
+.spectrum {
+    height: 130px;
+
+    display: flex;
+
+    align-items: end;
+
+    justify-content: center;
+
+    gap: 4px;
+
+    padding: 15px;
+
+    margin-bottom: 25px;
+
+    border-radius: 18px;
+
+    background: #05070d;
+
+    overflow: hidden;
+}
+
+.bar {
+    width: 7px;
+
+    min-height: 2px;
+
+    height: 2px;
+
+    border-radius:
+        10px 10px 2px 2px;
+
+    background:
+        linear-gradient(
+            to top,
+            #00eaff,
+            #00ff7b,
+            #ffe600,
+            #ff7a00,
+            #ff1493
+        );
+
+    box-shadow:
+        0 0 8px
+        rgba(0,255,255,0.5);
+
+    transition:
+        height 0.05s ease;
+}
+
+
+/* CONTROLS */
+
+.controls {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+button {
+    border: none;
+
+    cursor: pointer;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    padding: 15px 24px;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #293552,
+            #151b2c
+        );
+
+    box-shadow:
+        5px 5px 12px
+        rgba(0,0,0,0.4),
+
+        -3px -3px 8px
+        rgba(255,255,255,0.04);
+
+    transition: 0.2s;
+}
+
+button:hover {
+    transform:
+        translateY(-2px);
+}
+
+button:active {
+    transform:
+        scale(0.96);
+}
+
+.play {
+    background:
+        linear-gradient(
+            135deg,
+            #007cff,
+            #8a2be2
+        );
+}
+
+.stop {
+    background:
+        linear-gradient(
+            135deg,
+            #8d1c2c,
+            #40101a
+        );
+}
+
+
+/* VOLUME */
+
+.volume-box {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+.volume-box span {
+    font-size: 20px;
+}
+
+input[type="range"] {
+    flex: 1;
+
+    accent-color:
+        #00c8ff;
+}
+
+
+/* EQUALIZER */
+
+.eq-title {
+    text-align: center;
+
+    font-size: 13px;
+
+    letter-spacing: 2px;
+
+    color: #9ba7c7;
+
+    margin-bottom: 15px;
+}
+
+.equalizer {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 5px;
+
+    height: 190px;
+
+    padding:
+        12px 5px;
+
+    border-radius: 18px;
+
+    background: #05070d;
+
+    border:
+        1px solid
+        rgba(255,255,255,0.06);
+}
+
+.eq-band {
+    flex: 1;
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+}
+
+.eq-value {
+    font-size: 10px;
+
+    color: #9ba7c7;
+
+    height: 18px;
+}
+
+.eq-slider {
+    writing-mode:
+        vertical-lr;
+
+    direction: rtl;
+
+    width: 25px;
+
+    height: 130px;
+
+    accent-color:
+        #00c8ff;
+
+    cursor: pointer;
+}
+
+.eq-label {
+    font-size: 9px;
+
+    color: #aab2c8;
+
+    margin-top: 8px;
+
+    white-space: nowrap;
+}
+
+
+/* RESET */
+
+.reset-eq {
+    width: 100%;
+
+    margin-top: 12px;
+
+    padding: 10px;
+
+    font-size: 12px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #202941,
+            #111725
+        );
+}
+
+
+/* FOOTER */
+
+.footer {
+    text-align: center;
+
+    margin-top: 25px;
+
+    color: #66708b;
+
+    font-size: 12px;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="radio">
+
+
+<div class="logo">
+    RADIO STREAM
+</div>
+
+
+<div class="station">
+    RRI PRO 1
+</div>
+
+
+<div class="city">
+    Mataram
+</div>
+
+
+<div class="status">
+
+    <div
+        class="led"
+        id="led"
+    ></div>
+
+    <span id="statusText">
+        Tidak terhubung
+    </span>
+
+</div>
+
+
+<!-- SPECTRUM -->
+
+<div
+    class="spectrum"
+    id="spectrum"
+></div>
+
+
+<!-- AUDIO -->
+
+<audio
+    id="radioAudio"
+    preload="none"
+></audio>
+
+
+<!-- BUTTON -->
+
+<div class="controls">
+
+    <button
+        class="play"
+        id="playButton"
+    >
+        ▶ PUTAR
+    </button>
+
+
+    <button
+        class="stop"
+        id="stopButton"
+    >
+        ■ BERHENTI
+    </button>
+
+</div>
+
+
+<!-- VOLUME -->
+
+<div class="volume-box">
+
+    <span>🔊</span>
+
+    <input
+        type="range"
+        id="volume"
+        min="0"
+        max="1"
+        step="0.01"
+        value="0.8"
+    >
+
+</div>
+
+
+<!-- EQUALIZER -->
+
+<div class="eq-title">
+    10 BAND EQUALIZER
+</div>
+
+
+<div
+    class="equalizer"
+    id="equalizer"
+></div>
+
+
+<button
+    class="reset-eq"
+    id="resetEq"
+>
+    ↺ RESET EQ
+</button>
+
+
+<div class="footer">
+    RRI Pro 1 Mataram • Live Radio
+</div>
+
+
+</div>
+
+
 <script>
 
 /* =====================================================
@@ -9,18 +549,11 @@ const STREAM_URL =
 
 
 /* =====================================================
-   AUDIO ELEMENT
+   ELEMENT
    ===================================================== */
 
 const audio =
 document.getElementById("radioAudio");
-
-audio.volume = 0.8;
-
-
-/* =====================================================
-   STATUS
-   ===================================================== */
 
 const led =
 document.getElementById("led");
@@ -28,21 +561,49 @@ document.getElementById("led");
 const statusText =
 document.getElementById("statusText");
 
+const volume =
+document.getElementById("volume");
 
-function setStatus(text, type = "") {
+const spectrum =
+document.getElementById("spectrum");
 
-    statusText.textContent = text;
+const equalizerContainer =
+document.getElementById("equalizer");
 
-    led.className = "led";
+
+/* =====================================================
+   STATUS
+   ===================================================== */
+
+function setStatus(
+    text,
+    type = ""
+) {
+
+    statusText.textContent =
+        text;
+
+    led.className =
+        "led";
 
     if (type) {
-        led.classList.add(type);
+
+        led.classList.add(
+            type
+        );
     }
 }
 
 
 /* =====================================================
-   WEB AUDIO
+   AUDIO
+   ===================================================== */
+
+audio.volume = 0.8;
+
+
+/* =====================================================
+   WEB AUDIO VARIABLES
    ===================================================== */
 
 let audioContext = null;
@@ -59,10 +620,11 @@ let audioGraphReady = false;
 
 
 /* =====================================================
-   10 BAND EQ
+   EQ FREQUENCIES
    ===================================================== */
 
 const EQ_FREQUENCIES = [
+
     31,
     62,
     125,
@@ -73,43 +635,51 @@ const EQ_FREQUENCIES = [
     4000,
     8000,
     16000
+
 ];
 
 
 /* =====================================================
-   BUAT EQUALIZER
+   CREATE EQ UI
    ===================================================== */
 
 function createEqualizerUI() {
 
-    const container =
-        document.getElementById("equalizer");
+    equalizerContainer.innerHTML = "";
+
 
     EQ_FREQUENCIES.forEach(
         (frequency, index) => {
 
             const band =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             band.className =
                 "eq-band";
 
 
             const value =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             value.className =
                 "eq-value";
 
             value.id =
-                "eq-value-" + index;
+                "eq-value-" +
+                index;
 
             value.textContent =
                 "0 dB";
 
 
             const slider =
-                document.createElement("input");
+                document.createElement(
+                    "input"
+                );
 
             slider.type =
                 "range";
@@ -130,30 +700,45 @@ function createEqualizerUI() {
                 "0";
 
             slider.id =
-                "eq-" + index;
+                "eq-" +
+                index;
 
 
             const label =
-                document.createElement("div");
+                document.createElement(
+                    "div"
+                );
 
             label.className =
                 "eq-label";
 
+
             label.textContent =
                 frequency >= 1000
-                ? (frequency / 1000) + "k"
-                : frequency + "";
+
+                ? (
+                    frequency / 1000
+                ) + "k"
+
+                : frequency;
 
 
             slider.addEventListener(
                 "input",
-                () => {
+                function() {
 
                     const gain =
-                        Number(slider.value);
+                        Number(
+                            this.value
+                        );
+
 
                     value.textContent =
-                        (gain > 0 ? "+" : "") +
+                        (
+                            gain > 0
+                            ? "+"
+                            : ""
+                        ) +
                         gain +
                         " dB";
 
@@ -166,31 +751,47 @@ function createEqualizerUI() {
                         equalizer[index]
                             .gain
                             .setTargetAtTime(
+
                                 gain,
-                                audioContext.currentTime,
+
+                                audioContext
+                                    .currentTime,
+
                                 0.01
                             );
                     }
+
                 }
             );
 
 
-            band.appendChild(value);
+            band.appendChild(
+                value
+            );
 
-            band.appendChild(slider);
+            band.appendChild(
+                slider
+            );
 
-            band.appendChild(label);
+            band.appendChild(
+                label
+            );
 
-            container.appendChild(band);
+
+            equalizerContainer.appendChild(
+                band
+            );
+
         }
     );
 }
+
 
 createEqualizerUI();
 
 
 /* =====================================================
-   MEMBUAT AUDIO GRAPH
+   CREATE AUDIO GRAPH
    ===================================================== */
 
 function setupAudioGraph() {
@@ -199,12 +800,12 @@ function setupAudioGraph() {
         return true;
 
 
-    const AudioContext =
+    const AudioContextClass =
         window.AudioContext ||
         window.webkitAudioContext;
 
 
-    if (!AudioContext) {
+    if (!AudioContextClass) {
 
         setStatus(
             "Browser tidak mendukung audio",
@@ -215,136 +816,195 @@ function setupAudioGraph() {
     }
 
 
-    audioContext =
-        new AudioContext();
+    try {
+
+        audioContext =
+            new AudioContextClass();
 
 
-    /*
-       AUDIO
-          ↓
-       SOURCE
-          ↓
-       EQ
-          ↓
-       ANALYSER
-          ↓
-       MASTER
-          ↓
-       SPEAKER
-    */
+        sourceNode =
+            audioContext
+                .createMediaElementSource(
+                    audio
+                );
 
 
-    sourceNode =
-        audioContext
-            .createMediaElementSource(audio);
+        let previousNode =
+            sourceNode;
 
 
-    let previousNode =
-        sourceNode;
+        /*
+           10 BAND EQ
+        */
+
+        EQ_FREQUENCIES.forEach(
+            function(frequency) {
+
+                const filter =
+                    audioContext
+                        .createBiquadFilter();
 
 
-    EQ_FREQUENCIES.forEach(
-        (frequency) => {
-
-            const filter =
-                audioContext
-                    .createBiquadFilter();
-
-            filter.type =
-                "peaking";
-
-            filter.frequency.value =
-                frequency;
-
-            filter.Q.value =
-                1.1;
-
-            filter.gain.value =
-                0;
+                filter.type =
+                    "peaking";
 
 
-            previousNode.connect(filter);
-
-            previousNode =
-                filter;
-
-            equalizer.push(filter);
-        }
-    );
+                filter.frequency.value =
+                    frequency;
 
 
-    analyser =
-        audioContext.createAnalyser();
-
-    analyser.fftSize =
-        2048;
-
-    analyser.minDecibels =
-        -90;
-
-    analyser.maxDecibels =
-        -10;
-
-    analyser.smoothingTimeConstant =
-        0.72;
+                filter.Q.value =
+                    1.1;
 
 
-    masterGain =
-        audioContext.createGain();
-
-    masterGain.gain.value =
-        audio.volume;
+                filter.gain.value =
+                    0;
 
 
-    previousNode.connect(analyser);
-
-    analyser.connect(masterGain);
-
-    masterGain.connect(
-        audioContext.destination
-    );
+                previousNode.connect(
+                    filter
+                );
 
 
-    audioGraphReady =
-        true;
+                previousNode =
+                    filter;
 
 
-    return true;
+                equalizer.push(
+                    filter
+                );
+
+            }
+        );
+
+
+        /*
+           ANALYSER
+        */
+
+        analyser =
+            audioContext
+                .createAnalyser();
+
+
+        analyser.fftSize =
+            2048;
+
+
+        analyser.minDecibels =
+            -90;
+
+
+        analyser.maxDecibels =
+            -10;
+
+
+        analyser.smoothingTimeConstant =
+            0.72;
+
+
+        /*
+           MASTER
+        */
+
+        masterGain =
+            audioContext
+                .createGain();
+
+
+        masterGain.gain.value =
+            Number(
+                volume.value
+            );
+
+
+        previousNode.connect(
+            analyser
+        );
+
+
+        analyser.connect(
+            masterGain
+        );
+
+
+        masterGain.connect(
+            audioContext.destination
+        );
+
+
+        audioGraphReady =
+            true;
+
+
+        return true;
+
+    }
+    catch (error) {
+
+        console.error(
+            "AUDIO GRAPH ERROR:",
+            error
+        );
+
+
+        setStatus(
+            "Audio gagal disiapkan",
+            "error"
+        );
+
+
+        return false;
+    }
 }
 
 
 /* =====================================================
-   PUTAR RADIO
+   PLAY
    ===================================================== */
 
-let connectionTimeout = null;
+let connecting = false;
+
+let connectionTimer = null;
 
 
 async function playRadio() {
 
-    clearTimeout(connectionTimeout);
+    if (connecting)
+        return;
+
+
+    connecting = true;
+
+
+    clearTimeout(
+        connectionTimer
+    );
 
 
     setStatus(
-        "Menghubungkan...",
-        ""
+        "Menghubungkan..."
     );
 
 
     try {
 
         /*
-           Buat Web Audio
-           setelah tombol ditekan.
+           SIAPKAN AUDIO
         */
 
-        if (!setupAudioGraph()) {
+        if (
+            !setupAudioGraph()
+        ) {
+
+            connecting = false;
+
             return;
         }
 
 
         /*
-           Aktifkan AudioContext.
+           AKTIFKAN AUDIO CONTEXT
         */
 
         if (
@@ -357,13 +1017,12 @@ async function playRadio() {
 
 
         /*
-           Pasang URL RRI
-           hanya jika belum ada.
+           PASANG STREAM
         */
 
         if (
-            !audio.src ||
-            audio.src !== STREAM_URL
+            audio.src !==
+            STREAM_URL
         ) {
 
             audio.src =
@@ -374,28 +1033,25 @@ async function playRadio() {
 
 
         /*
-           MULAI PLAY.
-           
-           Penting:
-           kita TIDAK langsung mengatakan
-           "Terhubung".
+           PLAY
         */
 
         await audio.play();
 
 
         /*
-           Beri waktu stream untuk
-           benar-benar mulai.
+           JANGAN langsung mengatakan
+           TERHUBUNG.
+
+           Tunggu event "playing".
         */
 
-        connectionTimeout =
+
+        connectionTimer =
             setTimeout(
-                () => {
+                function() {
 
                     if (
-                        !audio.paused &&
-                        !audio.ended &&
                         audio.readyState < 3
                     ) {
 
@@ -404,24 +1060,29 @@ async function playRadio() {
                             "error"
                         );
 
+                        audio.pause();
+
                         stopSpectrum();
                     }
+
+                    connecting =
+                        false;
 
                 },
                 15000
             );
 
-
-    } catch (error) {
+    }
+    catch (error) {
 
         console.error(
-            "RRI PLAY ERROR:",
+            "PLAY ERROR:",
             error
         );
 
 
         clearTimeout(
-            connectionTimeout
+            connectionTimer
         );
 
 
@@ -431,22 +1092,57 @@ async function playRadio() {
         );
 
 
+        connecting =
+            false;
+
+
         stopSpectrum();
     }
 }
 
 
 /* =====================================================
-   EVENT: AUDIO BENAR-BENAR MULAI
+   STOP
+   ===================================================== */
+
+function stopRadio() {
+
+    clearTimeout(
+        connectionTimer
+    );
+
+
+    audio.pause();
+
+
+    setStatus(
+        "Tidak terhubung"
+    );
+
+
+    connecting =
+        false;
+
+
+    stopSpectrum();
+}
+
+
+/* =====================================================
+   AUDIO PLAYING
    ===================================================== */
 
 audio.addEventListener(
     "playing",
-    () => {
+    function() {
 
         clearTimeout(
-            connectionTimeout
+            connectionTimer
         );
+
+
+        connecting =
+            false;
 
 
         setStatus(
@@ -456,70 +1152,67 @@ audio.addEventListener(
 
 
         startRealSpectrum();
+
     }
 );
 
 
 /* =====================================================
-   EVENT: BUFFERING
+   WAITING
    ===================================================== */
 
 audio.addEventListener(
     "waiting",
-    () => {
+    function() {
 
-        setStatus(
-            "Buffering...",
-            ""
-        );
+        if (!audio.paused) {
+
+            setStatus(
+                "Buffering..."
+            );
+        }
+
     }
 );
 
 
 /* =====================================================
-   EVENT: CAN PLAY
+   CAN PLAY
    ===================================================== */
 
 audio.addEventListener(
     "canplay",
-    () => {
+    function() {
 
-        /*
-           Jangan langsung dianggap LIVE.
-           Tunggu event "playing".
-        */
+        console.log(
+            "RRI can play"
+        );
 
-        if (
-            !audio.paused &&
-            audio.readyState >= 3
-        ) {
-
-            setStatus(
-                "Menyiapkan audio...",
-                ""
-            );
-        }
     }
 );
 
 
 /* =====================================================
-   EVENT: ERROR
+   ERROR
    ===================================================== */
 
 audio.addEventListener(
     "error",
-    () => {
+    function() {
 
         clearTimeout(
-            connectionTimeout
+            connectionTimer
         );
 
 
         console.error(
-            "RRI AUDIO ERROR:",
+            "RRI ERROR:",
             audio.error
         );
+
+
+        connecting =
+            false;
 
 
         setStatus(
@@ -529,89 +1222,42 @@ audio.addEventListener(
 
 
         stopSpectrum();
+
     }
 );
 
 
 /* =====================================================
-   EVENT: STALLED
+   STALLED
    ===================================================== */
 
 audio.addEventListener(
     "stalled",
-    () => {
+    function() {
 
-        setStatus(
-            "Koneksi RRI terhenti...",
-            ""
-        );
+        if (!audio.paused) {
+
+            setStatus(
+                "Koneksi RRI terhenti..."
+            );
+        }
+
     }
 );
-
-
-/* =====================================================
-   EVENT: SUSPEND
-   ===================================================== */
-
-audio.addEventListener(
-    "suspend",
-    () => {
-
-        /*
-           Tidak dianggap error.
-           Browser kadang memanggil suspend
-           pada stream.
-        */
-
-        console.log(
-            "RRI stream suspended"
-        );
-    }
-);
-
-
-/* =====================================================
-   BERHENTI
-   ===================================================== */
-
-function stopRadio() {
-
-    clearTimeout(
-        connectionTimeout
-    );
-
-
-    audio.pause();
-
-
-    /*
-       Tidak perlu menghapus src.
-       Dengan begitu kita tidak perlu
-       membuat ulang koneksi setiap kali.
-    */
-
-    setStatus(
-        "Tidak terhubung",
-        ""
-    );
-
-
-    stopSpectrum();
-}
 
 
 /* =====================================================
    VOLUME
    ===================================================== */
 
-document
-.getElementById("volume")
-.addEventListener(
+volume.addEventListener(
     "input",
-    function () {
+    function() {
 
         const value =
-            Number(this.value);
+            Number(
+                this.value
+            );
 
 
         audio.volume =
@@ -624,21 +1270,24 @@ document
         ) {
 
             masterGain.gain.setTargetAtTime(
+
                 value,
+
                 audioContext.currentTime,
+
                 0.01
+
             );
+
         }
+
     }
 );
 
 
 /* =====================================================
-   REAL AUDIO SPECTRUM
+   SPECTRUM BARS
    ===================================================== */
-
-const spectrum =
-document.getElementById("spectrum");
 
 const BAR_COUNT =
     42;
@@ -653,16 +1302,34 @@ for (
 ) {
 
     const bar =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     bar.className =
         "bar";
 
-    spectrum.appendChild(bar);
 
-    bars.push(bar);
+    bar.style.height =
+        "2px";
+
+
+    spectrum.appendChild(
+        bar
+    );
+
+
+    bars.push(
+        bar
+    );
+
 }
 
+
+/* =====================================================
+   REAL SPECTRUM
+   ===================================================== */
 
 let spectrumAnimation =
     null;
@@ -687,7 +1354,9 @@ function startRealSpectrum() {
     function draw() {
 
         spectrumAnimation =
-            requestAnimationFrame(draw);
+            requestAnimationFrame(
+                draw
+            );
 
 
         analyser.getByteFrequencyData(
@@ -707,27 +1376,41 @@ function startRealSpectrum() {
 
             const start =
                 Math.floor(
+
                     Math.pow(
                         i / BAR_COUNT,
                         1.7
                     ) *
+
                     binCount *
+
                     0.75
+
                 );
 
 
             const end =
                 Math.max(
+
                     start + 1,
+
                     Math.floor(
+
                         Math.pow(
+
                             (i + 1) /
                             BAR_COUNT,
+
                             1.7
+
                         ) *
+
                         binCount *
+
                         0.75
+
                     )
+
                 );
 
 
@@ -738,160 +1421,11 @@ function startRealSpectrum() {
 
             for (
                 let j = start;
+
                 j < end &&
                 j < binCount;
+
                 j++
             ) {
 
-                sum += data[j];
-
-                count++;
-            }
-
-
-            const average =
-                count
-                ? sum / count
-                : 0;
-
-
-            let level =
-                Math.max(
-                    0,
-                    average - 12
-                );
-
-
-            let height =
-                (level / 243) * 110;
-
-
-            height *= 1.18;
-
-
-            if (height < 3)
-                height = 2;
-
-
-            if (height > 110)
-                height = 110;
-
-
-            bars[i].style.height =
-                height + "px";
-        }
-    }
-
-
-    draw();
-}
-
-
-/* =====================================================
-   STOP SPECTRUM
-   ===================================================== */
-
-function stopSpectrum() {
-
-    if (spectrumAnimation) {
-
-        cancelAnimationFrame(
-            spectrumAnimation
-        );
-
-        spectrumAnimation =
-            null;
-    }
-
-
-    bars.forEach(
-        bar => {
-
-            bar.style.height =
-                "2px";
-        }
-    );
-}
-
-
-/* =====================================================
-   RESET EQ
-   ===================================================== */
-
-function resetEqualizer() {
-
-    EQ_FREQUENCIES.forEach(
-        (frequency, index) => {
-
-            const slider =
-                document.getElementById(
-                    "eq-" + index
-                );
-
-
-            const value =
-                document.getElementById(
-                    "eq-value-" + index
-                );
-
-
-            slider.value =
-                "0";
-
-
-            value.textContent =
-                "0 dB";
-
-
-            if (
-                equalizer[index] &&
-                audioContext
-            ) {
-
-                equalizer[index]
-                    .gain
-                    .setTargetAtTime(
-                        0,
-                        audioContext.currentTime,
-                        0.01
-                    );
-            }
-        }
-    );
-}
-
-
-/* =====================================================
-   PAUSE
-   ===================================================== */
-
-audio.addEventListener(
-    "pause",
-    () => {
-
-        if (!audio.src)
-            return;
-
-
-        /*
-           Jangan ubah status menjadi
-           "Dijeda" ketika browser hanya
-           sedang menangani buffering.
-        */
-
-        if (
-            audio.readyState === 0
-        ) {
-
-            return;
-        }
-
-
-        setStatus(
-            "Dijeda",
-            ""
-        );
-    }
-);
-
-    </script>
+           
