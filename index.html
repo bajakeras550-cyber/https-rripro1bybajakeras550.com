@@ -255,40 +255,45 @@ input[type="range"] {
 <script>
 
 /* =====================================================
-   MASUKKAN URL STREAMING RRI DI SINI
+   RRI PRO 1 MATARAM
+   URL STREAM SUDAH DITANAM DI SINI
    ===================================================== */
 
-const STREAM_URL = https://play.rri.co.id/sharing/radio/010468?utm_source;
+const STREAM_URL =
+"https://stream-node1.rri.co.id/streaming/13/9113/rrimatarampro1.mp3";
 
 
 /* AUDIO */
 
-const audio = document.getElementById("radioAudio");
+const audio =
+document.getElementById("radioAudio");
 
 audio.volume = 0.8;
 
 
 /* STATUS */
 
-const led = document.getElementById("led");
-const statusText = document.getElementById("statusText");
+const led =
+document.getElementById("led");
+
+const statusText =
+document.getElementById("statusText");
 
 
-/* PLAY */
+/* =====================================================
+   PLAY
+   ===================================================== */
 
 function playRadio() {
 
-    if (STREAM_URL === "MASUKKAN_URL_STREAM_RRI_DI_SINI") {
+    statusText.textContent =
+        "Menghubungkan...";
 
-        statusText.textContent =
-            "URL streaming belum diisi";
+    led.className =
+        "led";
 
-        led.className = "led error";
-
-        return;
-    }
-
-    audio.src = STREAM_URL;
+    audio.src =
+        STREAM_URL;
 
     audio.play()
         .then(() => {
@@ -302,7 +307,9 @@ function playRadio() {
             startSpectrum();
 
         })
-        .catch(() => {
+        .catch((error) => {
+
+            console.error(error);
 
             statusText.textContent =
                 "Gagal terhubung";
@@ -310,11 +317,15 @@ function playRadio() {
             led.className =
                 "led error";
 
+            stopSpectrum();
+
         });
 }
 
 
-/* STOP */
+/* =====================================================
+   STOP
+   ===================================================== */
 
 function stopRadio() {
 
@@ -334,47 +345,57 @@ function stopRadio() {
 }
 
 
-/* VOLUME */
+/* =====================================================
+   VOLUME
+   ===================================================== */
 
 document
 .getElementById("volume")
 .addEventListener("input", function () {
 
-    audio.volume = this.value;
+    audio.volume =
+        this.value;
 
 });
 
 
 /* =====================================================
-   SPECTRUM VISUALIZER
+   SPECTRUM
    ===================================================== */
 
 const spectrum =
-    document.getElementById("spectrum");
+document.getElementById("spectrum");
 
 const BAR_COUNT = 42;
 
 let bars = [];
+
 let spectrumTimer = null;
 
 
 /* BUAT BAR */
 
-for (let i = 0; i < BAR_COUNT; i++) {
+for (
+    let i = 0;
+    i < BAR_COUNT;
+    i++
+) {
 
     const bar =
         document.createElement("div");
 
-    bar.className = "bar";
+    bar.className =
+        "bar";
 
     spectrum.appendChild(bar);
 
     bars.push(bar);
-
 }
 
 
-/* ANIMASI */
+/* =====================================================
+   ANIMASI SPECTRUM
+   ===================================================== */
 
 function startSpectrum() {
 
@@ -384,92 +405,118 @@ function startSpectrum() {
     spectrumTimer =
         setInterval(() => {
 
-            bars.forEach((bar, index) => {
+            bars.forEach(
+                (bar, index) => {
 
-                const wave =
-                    Math.sin(
-                        Date.now() / 180 +
-                        index * 0.55
-                    );
+                    const wave =
+                        Math.sin(
+                            Date.now() / 180 +
+                            index * 0.55
+                        );
 
-                const random =
-                    Math.random() * 55;
+                    const random =
+                        Math.random() * 55;
 
-                let height =
-                    15 +
-                    Math.abs(wave) * 55 +
-                    random;
+                    let height =
+                        15 +
+                        Math.abs(wave) * 55 +
+                        random;
 
-                if (height > 110)
-                    height = 110;
+                    if (height > 110)
+                        height = 110;
 
-                bar.style.height =
-                    height + "px";
+                    bar.style.height =
+                        height + "px";
 
-            });
+                }
+            );
 
         }, 80);
 }
 
 
-/* STOP ANIMASI */
+/* =====================================================
+   STOP SPECTRUM
+   ===================================================== */
 
 function stopSpectrum() {
 
-    clearInterval(spectrumTimer);
+    clearInterval(
+        spectrumTimer
+    );
 
-    spectrumTimer = null;
+    spectrumTimer =
+        null;
 
-    bars.forEach(bar => {
+    bars.forEach(
+        bar => {
 
-        bar.style.height = "5px";
+            bar.style.height =
+                "5px";
 
-    });
+        }
+    );
 }
 
 
-/* ERROR */
+/* =====================================================
+   ERROR STREAM
+   ===================================================== */
 
-audio.addEventListener("error", () => {
+audio.addEventListener(
+    "error",
+    () => {
 
-    statusText.textContent =
-        "Koneksi terputus";
+        statusText.textContent =
+            "Koneksi terputus";
 
-    led.className =
-        "led error";
+        led.className =
+            "led error";
 
-    stopSpectrum();
+        stopSpectrum();
 
-});
-
-
-/* PLAYING */
-
-audio.addEventListener("playing", () => {
-
-    statusText.textContent =
-        "Terhubung • LIVE";
-
-    led.className =
-        "led connected";
-
-});
+    }
+);
 
 
-/* PAUSE */
+/* =====================================================
+   PLAYING
+   ===================================================== */
 
-audio.addEventListener("pause", () => {
+audio.addEventListener(
+    "playing",
+    () => {
 
-    if (!audio.src)
-        return;
+        statusText.textContent =
+            "Terhubung • LIVE";
 
-    statusText.textContent =
-        "Dijeda";
+        led.className =
+            "led connected";
 
-});
+        startSpectrum();
 
+    }
+);
+
+
+/* =====================================================
+   PAUSE
+   ===================================================== */
+
+audio.addEventListener(
+    "pause",
+    () => {
+
+        if (!audio.src)
+            return;
+
+        statusText.textContent =
+            "Dijeda";
+
+    }
+);
 
 </script>
 
 </body>
-  </html>
+</html>
