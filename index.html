@@ -1,19 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>RRI Pro 1 Mataram</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -21,11 +14,9 @@
 body {
     margin: 0;
     min-height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     font-family: Arial, sans-serif;
 
     background:
@@ -42,112 +33,73 @@ body {
 .radio {
     width: 92%;
     max-width: 480px;
-
     padding: 28px;
 
     border-radius: 28px;
 
-    background:
-        rgba(15, 20, 35, 0.92);
+    background: rgba(15, 20, 35, 0.92);
 
-    border:
-        1px solid
-        rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.12);
 
     box-shadow:
-        0 25px 70px
-        rgba(0,0,0,0.65),
-
-        inset 0 0 30px
-        rgba(255,255,255,0.03);
+        0 25px 70px rgba(0,0,0,0.65),
+        inset 0 0 30px rgba(255,255,255,0.03);
 
     backdrop-filter: blur(15px);
 }
-
 
 /* LOGO */
 
 .logo {
     text-align: center;
-
     font-size: 14px;
-
     letter-spacing: 4px;
-
     color: #9ba7c7;
-
     margin-bottom: 8px;
 }
-
 
 /* STATION */
 
 .station {
     text-align: center;
-
     font-size: 30px;
-
     font-weight: bold;
-
     margin-bottom: 5px;
 }
 
-
-/* CITY */
-
 .city {
     text-align: center;
-
     color: #9fa9c3;
-
     margin-bottom: 25px;
 }
-
 
 /* STATUS */
 
 .status {
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     gap: 9px;
-
     margin-bottom: 25px;
-
     font-size: 14px;
 }
 
 .led {
     width: 11px;
     height: 11px;
-
     border-radius: 50%;
-
     background: #555;
-
-    box-shadow:
-        0 0 0 transparent;
-
-    transition: 0.3s;
 }
 
 .led.connected {
     background: #00ff73;
-
-    box-shadow:
-        0 0 12px #00ff73;
+    box-shadow: 0 0 12px #00ff73;
 }
 
 .led.error {
     background: #ff3030;
-
-    box-shadow:
-        0 0 12px #ff3030;
+    box-shadow: 0 0 12px #ff3030;
 }
-
 
 /* SPECTRUM */
 
@@ -155,37 +107,28 @@ body {
     height: 130px;
 
     display: flex;
-
     align-items: end;
-
     justify-content: center;
 
     gap: 4px;
-
     padding: 15px;
 
     margin-bottom: 25px;
 
     border-radius: 18px;
-
     background: #05070d;
 
     overflow: hidden;
 }
 
 .bar {
-    width: 8px;
-
-    min-height: 2px;
-
-    height: 2px;
-
     flex: 1;
-
     max-width: 9px;
 
-    border-radius:
-        10px 10px 2px 2px;
+    height: 2px;
+    min-height: 2px;
+
+    border-radius: 10px 10px 2px 2px;
 
     background:
         linear-gradient(
@@ -198,38 +141,25 @@ body {
         );
 
     box-shadow:
-        0 0 6px
-        rgba(0,255,255,0.45);
-
-    /*
-       PENTING:
-       Tidak memakai transition
-       agar HP tidak lag.
-    */
+        0 0 6px rgba(0,255,255,0.45);
 }
-
 
 /* CONTROLS */
 
 .controls {
     display: flex;
-
     justify-content: center;
-
     gap: 15px;
-
     margin-bottom: 25px;
 }
 
 button {
     border: none;
-
     cursor: pointer;
 
     color: white;
 
     font-size: 16px;
-
     font-weight: bold;
 
     padding: 15px 24px;
@@ -244,23 +174,12 @@ button {
         );
 
     box-shadow:
-        5px 5px 12px
-        rgba(0,0,0,0.4),
-
-        -3px -3px 8px
-        rgba(255,255,255,0.04);
-
-    transition: 0.2s;
-}
-
-button:hover {
-    transform:
-        translateY(-2px);
+        5px 5px 12px rgba(0,0,0,0.4),
+        -3px -3px 8px rgba(255,255,255,0.04);
 }
 
 button:active {
-    transform:
-        scale(0.96);
+    transform: scale(0.96);
 }
 
 .play {
@@ -281,16 +200,12 @@ button:active {
         );
 }
 
-
 /* VOLUME */
 
 .volume-box {
     display: flex;
-
     align-items: center;
-
     gap: 12px;
-
     margin-bottom: 25px;
 }
 
@@ -300,37 +215,26 @@ button:active {
 
 input[type="range"] {
     flex: 1;
-
-    accent-color:
-        #00c8ff;
+    accent-color: #00c8ff;
 }
 
-
-/* EQUALIZER */
+/* EQ */
 
 .eq-title {
     text-align: center;
-
     font-size: 13px;
-
     letter-spacing: 2px;
-
     color: #9ba7c7;
-
     margin-bottom: 15px;
 }
 
 .equalizer {
     display: flex;
-
     justify-content: space-between;
-
     gap: 5px;
 
     height: 190px;
-
-    padding:
-        12px 5px;
+    padding: 12px 5px;
 
     border-radius: 18px;
 
@@ -343,43 +247,31 @@ input[type="range"] {
 
 .eq-band {
     flex: 1;
-
     min-width: 0;
 
     display: flex;
-
     flex-direction: column;
-
     align-items: center;
 }
 
 .eq-value {
     font-size: 10px;
-
     color: #9ba7c7;
-
     height: 18px;
 }
 
 .eq-slider {
-    writing-mode:
-        vertical-lr;
-
+    writing-mode: vertical-lr;
     direction: rtl;
 
     width: 25px;
-
     height: 130px;
 
-    accent-color:
-        #00c8ff;
-
-    cursor: pointer;
+    accent-color: #00c8ff;
 }
 
 .eq-label {
     font-size: 9px;
-
     color: #aab2c8;
 
     margin-top: 8px;
@@ -387,16 +279,11 @@ input[type="range"] {
     white-space: nowrap;
 }
 
-
-/* RESET */
-
 .reset-eq {
     width: 100%;
-
     margin-top: 12px;
 
     padding: 10px;
-
     font-size: 12px;
 
     background:
@@ -407,19 +294,13 @@ input[type="range"] {
         );
 }
 
-
-/* FOOTER */
-
 .footer {
     text-align: center;
-
     margin-top: 25px;
 
     color: #66708b;
-
     font-size: 12px;
 }
-
 
 /* MOBILE */
 
@@ -431,10 +312,6 @@ input[type="range"] {
 
     .station {
         font-size: 26px;
-    }
-
-    .controls {
-        gap: 8px;
     }
 
     button {
@@ -449,134 +326,123 @@ input[type="range"] {
     .eq-slider {
         width: 22px;
     }
-
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
 <div class="radio">
 
+    <div class="logo">
+        RADIO STREAM
+    </div>
 
-<div class="logo">
-    RADIO STREAM
-</div>
+    <div class="station">
+        RRI PRO 1
+    </div>
+
+    <div class="city">
+        Mataram
+    </div>
+
+    <div class="status">
+
+        <div
+            class="led"
+            id="led">
+        </div>
+
+        <span id="statusText">
+            Tidak terhubung
+        </span>
+
+    </div>
 
 
-<div class="station">
-    RRI PRO 1
-</div>
-
-
-<div class="city">
-    Mataram
-</div>
-
-
-<div class="status">
+    <!-- SPECTRUM -->
 
     <div
-        class="led"
-        id="led"
-    ></div>
-
-    <span id="statusText">
-        Tidak terhubung
-    </span>
-
-</div>
+        class="spectrum"
+        id="spectrum">
+    </div>
 
 
-<!-- SPECTRUM -->
+    <!-- AUDIO -->
 
-<div
-    class="spectrum"
-    id="spectrum"
-></div>
-
-
-<!-- AUDIO -->
-
-<audio
-    id="radioAudio"
-    preload="none"
-    playsinline
-></audio>
+    <audio
+        id="radioAudio"
+        preload="none"
+        playsinline>
+    </audio>
 
 
-<!-- BUTTON -->
+    <!-- BUTTON -->
 
-<div class="controls">
+    <div class="controls">
+
+        <button
+            class="play"
+            id="playButton"
+            type="button">
+
+            ▶ PUTAR
+
+        </button>
+
+        <button
+            class="stop"
+            id="stopButton"
+            type="button">
+
+            ■ BERHENTI
+
+        </button>
+
+    </div>
+
+
+    <!-- VOLUME -->
+
+    <div class="volume-box">
+
+        <span>🔊</span>
+
+        <input
+            type="range"
+            id="volume"
+            min="0"
+            max="1"
+            step="0.01"
+            value="0.8">
+
+    </div>
+
+
+    <!-- EQ -->
+
+    <div class="eq-title">
+        10 BAND EQUALIZER
+    </div>
+
+    <div
+        class="equalizer"
+        id="equalizer">
+    </div>
 
     <button
-        class="play"
-        id="playButton"
-        type="button"
-    >
-        ▶ PUTAR
+        class="reset-eq"
+        id="resetEq"
+        type="button">
+
+        ↺ RESET EQ
+
     </button>
 
 
-    <button
-        class="stop"
-        id="stopButton"
-        type="button"
-    >
-        ■ BERHENTI
-    </button>
-
-</div>
-
-
-<!-- VOLUME -->
-
-<div class="volume-box">
-
-    <span>🔊</span>
-
-    <input
-        type="range"
-        id="volume"
-        min="0"
-        max="1"
-        step="0.01"
-        value="0.8"
-    >
-
-</div>
-
-
-<!-- EQUALIZER -->
-
-<div class="eq-title">
-    10 BAND EQUALIZER
-</div>
-
-
-<div
-    class="equalizer"
-    id="equalizer"
-></div>
-
-
-<button
-    class="reset-eq"
-    id="resetEq"
-    type="button"
->
-    ↺ RESET EQ
-</button>
-
-
-<div class="footer">
-    RRI Pro 1 Mataram • Live Radio
-</div>
-
+    <div class="footer">
+        RRI Pro 1 Mataram • Live Radio
+    </div>
 
 </div>
 
@@ -584,7 +450,7 @@ input[type="range"] {
 <script>
 
 /* =====================================================
-   RRI PRO 1 MATARAM
+   STREAM RRI PRO 1 MATARAM
    ===================================================== */
 
 const STREAM_URL =
@@ -619,7 +485,7 @@ const playButton =
 const stopButton =
     document.getElementById("stopButton");
 
-const resetEqButton =
+const resetEq =
     document.getElementById("resetEq");
 
 
@@ -640,41 +506,17 @@ function setStatus(text, type = "") {
 
 
 /* =====================================================
-   AUDIO
+   VOLUME
    ===================================================== */
 
 audio.volume = 0.8;
 
 
 /* =====================================================
-   WEB AUDIO
-   ===================================================== */
-
-let audioContext = null;
-
-let sourceNode = null;
-
-let analyser = null;
-
-let masterGain = null;
-
-let equalizer = [];
-
-let audioGraphReady = false;
-
-let spectrumAnimation = null;
-
-let connecting = false;
-
-let connectionTimer = null;
-
-
-/* =====================================================
-   EQ FREQUENCIES
+   EQ
    ===================================================== */
 
 const EQ_FREQUENCIES = [
-
     31,
     62,
     125,
@@ -685,15 +527,16 @@ const EQ_FREQUENCIES = [
     4000,
     8000,
     16000
-
 ];
+
+let eqSliders = [];
 
 
 /* =====================================================
-   CREATE EQ
+   BUAT EQ
    ===================================================== */
 
-function createEqualizerUI() {
+function createEQ() {
 
     equalizerContainer.innerHTML = "";
 
@@ -712,9 +555,6 @@ function createEqualizerUI() {
 
             value.className =
                 "eq-value";
-
-            value.id =
-                "eq-value-" + index;
 
             value.textContent =
                 "0 dB";
@@ -741,9 +581,6 @@ function createEqualizerUI() {
             slider.value =
                 "0";
 
-            slider.id =
-                "eq-" + index;
-
 
             const label =
                 document.createElement("div");
@@ -751,10 +588,9 @@ function createEqualizerUI() {
             label.className =
                 "eq-label";
 
-
             label.textContent =
                 frequency >= 1000
-                    ? (frequency / 1000) + "k"
+                    ? frequency / 1000 + "k"
                     : frequency;
 
 
@@ -772,24 +608,10 @@ function createEqualizerUI() {
                         " dB";
 
 
-                    if (
-                        equalizer[index] &&
-                        audioContext
-                    ) {
-
-                        equalizer[index]
-                            .gain
-                            .setTargetAtTime(
-
-                                gain,
-
-                                audioContext.currentTime,
-
-                                0.015
-
-                            );
-
-                    }
+                    applyEQ(
+                        index,
+                        gain
+                    );
 
                 }
             );
@@ -803,21 +625,44 @@ function createEqualizerUI() {
 
             equalizerContainer.appendChild(band);
 
+
+            eqSliders.push({
+                slider,
+                value
+            });
+
         }
     );
 }
 
 
-createEqualizerUI();
+createEQ();
 
 
 /* =====================================================
-   CREATE AUDIO GRAPH
+   WEB AUDIO
    ===================================================== */
 
-function setupAudioGraph() {
+let audioContext = null;
 
-    if (audioGraphReady) {
+let sourceNode = null;
+
+let analyser = null;
+
+let masterGain = null;
+
+let filters = [];
+
+let webAudioOK = false;
+
+
+/* =====================================================
+   SIAPKAN WEB AUDIO
+   ===================================================== */
+
+function setupWebAudio() {
+
+    if (webAudioOK) {
         return true;
     }
 
@@ -829,9 +674,8 @@ function setupAudioGraph() {
 
     if (!AudioContextClass) {
 
-        setStatus(
-            "Browser tidak mendukung audio",
-            "error"
+        console.log(
+            "Web Audio tidak tersedia."
         );
 
         return false;
@@ -844,27 +688,17 @@ function setupAudioGraph() {
             new AudioContextClass();
 
 
-        /*
-           AUDIO ELEMENT
-           ↓
-           SOURCE
-        */
-
         sourceNode =
             audioContext
                 .createMediaElementSource(audio);
 
 
-        let previousNode =
+        let node =
             sourceNode;
 
 
-        /*
-           10 BAND EQ
-        */
-
         EQ_FREQUENCIES.forEach(
-            function(frequency) {
+            frequency => {
 
                 const filter =
                     audioContext
@@ -874,40 +708,32 @@ function setupAudioGraph() {
                 filter.type =
                     "peaking";
 
-
                 filter.frequency.value =
                     frequency;
 
-
                 filter.Q.value =
                     1.1;
-
 
                 filter.gain.value =
                     0;
 
 
-                previousNode.connect(filter);
+                node.connect(filter);
 
-                previousNode = filter;
+                node = filter;
 
-                equalizer.push(filter);
+                filters.push(filter);
 
             }
         );
 
-
-        /*
-           ANALYSER
-        */
 
         analyser =
             audioContext.createAnalyser();
 
 
         /*
-           1024 LEBIH RINGAN
-           UNTUK HP
+           1024 = lebih ringan
         */
 
         analyser.fftSize =
@@ -917,22 +743,12 @@ function setupAudioGraph() {
         analyser.minDecibels =
             -90;
 
-
         analyser.maxDecibels =
             -15;
 
-
-        /*
-           SMOOTHING
-        */
-
         analyser.smoothingTimeConstant =
-            0.75;
+            0.8;
 
-
-        /*
-           MASTER GAIN
-        */
 
         masterGain =
             audioContext.createGain();
@@ -942,11 +758,7 @@ function setupAudioGraph() {
             Number(volume.value);
 
 
-        /*
-           CONNECT
-        */
-
-        previousNode.connect(analyser);
+        node.connect(analyser);
 
         analyser.connect(masterGain);
 
@@ -955,7 +767,7 @@ function setupAudioGraph() {
         );
 
 
-        audioGraphReady =
+        webAudioOK =
             true;
 
 
@@ -964,16 +776,34 @@ function setupAudioGraph() {
     }
     catch (error) {
 
-        console.error(
-            "Audio graph error:",
+        /*
+           Kalau CORS / Web Audio
+           gagal, RADIO TIDAK BOLEH MATI.
+        */
+
+        console.warn(
+            "Web Audio tidak dapat digunakan:",
             error
         );
 
 
-        setStatus(
-            "Audio gagal disiapkan",
-            "error"
-        );
+        audioContext =
+            null;
+
+        sourceNode =
+            null;
+
+        analyser =
+            null;
+
+        masterGain =
+            null;
+
+        filters =
+            [];
+
+        webAudioOK =
+            false;
 
 
         return false;
@@ -982,22 +812,54 @@ function setupAudioGraph() {
 
 
 /* =====================================================
-   PLAY
+   APPLY EQ
    ===================================================== */
 
-async function playRadio() {
+function applyEQ(index, gain) {
 
-    if (connecting) {
+    if (
+        !webAudioOK ||
+        !filters[index] ||
+        !audioContext
+    ) {
         return;
     }
 
 
-    connecting = true;
+    filters[index]
+        .gain
+        .setTargetAtTime(
+
+            gain,
+
+            audioContext.currentTime,
+
+            0.02
+
+        );
+}
 
 
-    clearTimeout(
-        connectionTimer
-    );
+/* =====================================================
+   PLAY
+   ===================================================== */
+
+let loading = false;
+
+let playTimeout = null;
+
+
+async function playRadio() {
+
+    if (loading) {
+        return;
+    }
+
+
+    loading = true;
+
+
+    clearTimeout(playTimeout);
 
 
     setStatus(
@@ -1005,108 +867,125 @@ async function playRadio() {
     );
 
 
+    /*
+       PASANG STREAM LANGSUNG
+    */
+
+    if (
+        !audio.src ||
+        audio.src !== STREAM_URL
+    ) {
+
+        audio.src =
+            STREAM_URL;
+
+    }
+
+
+    /*
+       COBA WEB AUDIO
+       TAPI JANGAN MEMBUAT RADIO
+       GAGAL KALAU CORS DITOLAK
+    */
+
     try {
 
-        /*
-           BUAT AUDIO GRAPH
-        */
+        setupWebAudio();
 
-        if (!setupAudioGraph()) {
+    }
+    catch (error) {
 
-            connecting = false;
+        console.warn(error);
 
-            return;
+    }
+
+
+    /*
+       RESUME AUDIO CONTEXT
+    */
+
+    if (
+        webAudioOK &&
+        audioContext
+    ) {
+
+        try {
+
+            if (
+                audioContext.state ===
+                "suspended"
+            ) {
+
+                await audioContext.resume();
+
+            }
+
         }
+        catch (error) {
 
-
-        /*
-           AKTIFKAN AUDIO CONTEXT
-        */
-
-        if (
-            audioContext.state ===
-            "suspended"
-        ) {
-
-            await audioContext.resume();
-
-        }
-
-
-        /*
-           PASANG STREAM
-        */
-
-        if (
-            audio.src !== STREAM_URL
-        ) {
-
-            audio.src =
-                STREAM_URL;
-
-            audio.load();
+            console.warn(error);
 
         }
 
+    }
 
-        /*
-           PUTAR
-        */
+
+    /*
+       PUTAR RADIO
+    */
+
+    try {
 
         await audio.play();
-
-
-        /*
-           TIMEOUT
-        */
-
-        connectionTimer =
-            setTimeout(
-                function() {
-
-                    if (
-                        !audio.paused &&
-                        audio.readyState < 3
-                    ) {
-
-                        setStatus(
-                            "RRI lambat / buffering",
-                            "error"
-                        );
-
-                    }
-
-                    connecting =
-                        false;
-
-                },
-                15000
-            );
 
     }
     catch (error) {
 
         console.error(
-            "PLAY ERROR:",
+            "Audio play error:",
             error
         );
 
 
-        clearTimeout(
-            connectionTimer
-        );
-
-
-        connecting =
+        loading =
             false;
 
 
         setStatus(
-            "Gagal terhubung ke RRI",
+            "Gagal memutar RRI",
             "error"
         );
 
+
+        return;
     }
+
+
+    /*
+       TUNGGU MAKSIMAL 15 DETIK
+    */
+
+    playTimeout =
+        setTimeout(
+            function() {
+
+                if (
+                    audio.paused
+                ) {
+
+                    setStatus(
+                        "RRI tidak merespons",
+                        "error"
+                    );
+
+                }
+
+                loading =
+                    false;
+
+            },
+            15000
+        );
 
 }
 
@@ -1118,14 +997,14 @@ async function playRadio() {
 function stopRadio() {
 
     clearTimeout(
-        connectionTimer
+        playTimeout
     );
 
 
     audio.pause();
 
 
-    connecting =
+    loading =
         false;
 
 
@@ -1140,7 +1019,7 @@ function stopRadio() {
 
 
 /* =====================================================
-   PLAYING
+   AUDIO PLAYING
    ===================================================== */
 
 audio.addEventListener(
@@ -1148,11 +1027,11 @@ audio.addEventListener(
     function() {
 
         clearTimeout(
-            connectionTimer
+            playTimeout
         );
 
 
-        connecting =
+        loading =
             false;
 
 
@@ -1162,7 +1041,11 @@ audio.addEventListener(
         );
 
 
-        startRealSpectrum();
+        if (webAudioOK) {
+
+            startSpectrum();
+
+        }
 
     }
 );
@@ -1189,6 +1072,22 @@ audio.addEventListener(
 
 
 /* =====================================================
+   CAN PLAY
+   ===================================================== */
+
+audio.addEventListener(
+    "canplay",
+    function() {
+
+        console.log(
+            "RRI stream siap"
+        );
+
+    }
+);
+
+
+/* =====================================================
    STALLED
    ===================================================== */
 
@@ -1199,26 +1098,10 @@ audio.addEventListener(
         if (!audio.paused) {
 
             setStatus(
-                "Koneksi RRI terhenti..."
+                "Koneksi lambat..."
             );
 
         }
-
-    }
-);
-
-
-/* =====================================================
-   CAN PLAY
-   ===================================================== */
-
-audio.addEventListener(
-    "canplay",
-    function() {
-
-        console.log(
-            "RRI stream siap diputar"
-        );
 
     }
 );
@@ -1233,16 +1116,16 @@ audio.addEventListener(
     function() {
 
         clearTimeout(
-            connectionTimer
+            playTimeout
         );
 
 
-        connecting =
+        loading =
             false;
 
 
         console.error(
-            "RRI AUDIO ERROR:",
+            "RRI ERROR:",
             audio.error
         );
 
@@ -1276,6 +1159,7 @@ volume.addEventListener(
 
 
         if (
+            webAudioOK &&
             masterGain &&
             audioContext
         ) {
@@ -1297,13 +1181,8 @@ volume.addEventListener(
 
 
 /* =====================================================
-   CREATE SPECTRUM BARS
+   SPECTRUM
    ===================================================== */
-
-/*
-   32 BAR
-   Supaya lebih ringan di HP.
-*/
 
 const BAR_COUNT =
     32;
@@ -1326,29 +1205,33 @@ for (
         "bar";
 
 
-    bar.style.height =
-        "2px";
-
-
     spectrum.appendChild(bar);
+
 
     bars.push(bar);
 
 }
 
 
+let spectrumFrame =
+    null;
+
+
 /* =====================================================
-   REAL SPECTRUM
+   START SPECTRUM
    ===================================================== */
 
-function startRealSpectrum() {
+function startSpectrum() {
 
-    if (!analyser) {
+    if (
+        !webAudioOK ||
+        !analyser
+    ) {
         return;
     }
 
 
-    if (spectrumAnimation) {
+    if (spectrumFrame) {
         return;
     }
 
@@ -1361,14 +1244,9 @@ function startRealSpectrum() {
 
     function draw() {
 
-        spectrumAnimation =
+        spectrumFrame =
             requestAnimationFrame(draw);
 
-
-        /*
-           Kalau radio berhenti,
-           jangan terus proses spectrum.
-        */
 
         if (audio.paused) {
             return;
@@ -1380,7 +1258,7 @@ function startRealSpectrum() {
         );
 
 
-        const binCount =
+        const bins =
             data.length;
 
 
@@ -1390,52 +1268,71 @@ function startRealSpectrum() {
             i++
         ) {
 
-            /*
-               Distribusi frekuensi
-            */
+            const position =
+                i / BAR_COUNT;
+
 
             const start =
                 Math.floor(
-
                     Math.pow(
-                        i / BAR_COUNT,
-                        1.6
+                        position,
+                        1.5
                     ) *
-
-                    binCount *
-
-                    0.82
-
+                    bins *
+                    0.8
                 );
 
 
             const end =
                 Math.max(
-
                     start + 1,
-
                     Math.floor(
-
                         Math.pow(
-
                             (i + 1) /
                             BAR_COUNT,
-
-                            1.6
-
+                            1.5
                         ) *
-
-                        binCount *
-
-                        0.82
-
+                        bins *
+                        0.8
                     )
-
                 );
 
 
-            let sum =
+            let total =
+                0;
+
+            let count =
                 0;
 
 
-            let count =
+            for (
+                let j = start;
+                j < end && j < bins;
+                j++
+            ) {
+
+                total +=
+                    data[j];
+
+                count++;
+
+            }
+
+
+            const average =
+                count
+                    ? total / count
+                    : 0;
+
+
+            const height =
+                Math.max(
+                    2,
+                    Math.min(
+                        100,
+                        average * 1.4
+                    )
+                );
+
+
+            bars[i
